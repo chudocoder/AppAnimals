@@ -1,0 +1,82 @@
+﻿@model int
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+    <h2>Edit animal</h2>
+    <br>
+    <script>
+        function getData() {
+            fetch("/api/Data/" + @Model).
+                then(function (response) {
+                    return response.json()
+                }).
+                then(data => {
+                    var tr;
+
+                    det = 1;
+                    var aniData = data[0];
+                    keysData = Object.keys(aniData);
+
+                    for (let key in keysData) {
+                        tr = $('<tr/>');
+                        tr.append("<td>" + "<b>" + keysData[key] + ":&nbsp" + "</b>" + "</td>");
+                        tr.append("<td>" + "<input id = '" + keysData[key] + "field' name='" + keysData[key] + "' type='text' value=" + "'" + aniData[keysData[key]] + "'" + ">" + "</td>");
+                        $("table").append(tr);
+                    }
+                    $('#Idfield').attr("disabled", "disabled");
+                });
+        }
+
+        function MyFunc() {
+            var answer = window.confirm("Save data for Id: " + @Model + " ?")
+                if (answer) {
+                    var obj = {};
+                    var subObj = {};
+
+                    inputData = $("input");
+
+                    obj[inputData[1].getAttribute("name")] = inputData[1].value;
+
+                    for (let i = 2; i !== inputData.length; i++) {
+                        subObj["Name"] = inputData[i].value;
+                        obj[inputData[i].getAttribute("name")] = subObj;
+                        subObj = {};
+                    }
+                    console.log(JSON.stringify(obj))
+                    
+                      const rawResponse = fetch(`/api/Data/${@Model}`, {
+                        method: 'PUT',
+                        headers: {
+                          'Accept': 'application/json',
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(obj)
+                      });
+                      const content = rawResponse;
+
+                    console.log(content);
+
+                    getData();
+                
+                }
+        }
+
+        getData();
+    </script>
+    <table style="border: 1px solid transparent">
+        <thead>
+            <tr>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <br>
+    <a href ="" onclick="MyFunc()">Save</a>
+    <nobr> | </nobr>
+    @Html.ActionLink("Back", "Animals", "Home");
+}

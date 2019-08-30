@@ -1,0 +1,91 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>If you are zoom out the page you are will can to see all animals on the map.</p>
+</div>
+
+<div id="map"
+     class="map map-home leaflet-container leaflet-touch leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+     style="height: 300px; margin-top: 50px; position: relative;" tabindex="0">
+    <div class="leaflet-pane leaflet-map-pane" style="transform: translate3d(0px, 0px, 0px);">
+        <div class="leaflet-pane leaflet-tile-pane">
+
+                <div class="leaflet-tile-container leaflet-zoom-animated"
+                     style="z-index: 17; transform: translate3d(0px, 0px, 0px) scale(2);"></div>
+            </div>
+        </div>
+        <div class="leaflet-pane leaflet-shadow-pane">         
+        </div>
+        <div class="leaflet-pane leaflet-overlay-pane"></div>
+        <div class="leaflet-pane leaflet-marker-pane">
+            
+        </div>
+        <div class="leaflet-pane leaflet-tooltip-pane"></div>
+        <div class="leaflet-pane leaflet-popup-pane">
+            <div class="leaflet-popup  leaflet-zoom-animated"
+                 style="opacity: 1; transform: translate3d(432px, 154px, 0px); bottom: -7px; left: -78px;">          
+            </div>
+        </div>
+        <div class="leaflet-proxy leaflet-zoom-animated"
+             style="transform: translate3d(4.1906e+06px, 2.78952e+06px, 0px) scale(16384);"></div>
+    </div>
+    <div class="leaflet-control-container">
+        <div class="leaflet-top leaflet-left">
+            <div class="leaflet-control-zoom leaflet-bar leaflet-control">
+                <a class="leaflet-control-zoom-in"
+                    href="https://leafletjs.com/#" title="Zoom in" role="button" aria-label="Zoom in">+</a>
+                    <a class="leaflet-control-zoom-out" href="https://leafletjs.com/#" title="Zoom out" role="button" aria-label="Zoom out">−</a>
+            </div>
+        </div>
+        <div class="leaflet-top leaflet-right"></div>
+        <div class="leaflet-bottom leaflet-left"></div>
+        <div class="leaflet-bottom leaflet-right">
+            <div class="leaflet-control-attribution leaflet-control">
+                <a href="https://leafletjs.com/"
+                   title="A JS library for interactive maps">Leaflet</a> | © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors
+            </div>
+        </div>
+    </div>
+
+
+
+<script type="text/javascript">
+    
+
+    var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        osm = L.tileLayer(osmUrl, { maxZoom: 18});
+
+    var map = L.map('map').setView([51.505, -0.159], 15).addLayer(osm);
+
+    fetch("/api/Data").
+        then(function (response) {
+            return response.json()
+        }).
+        then(data => {
+            addMarkers(data);
+        });
+ 
+    function addMarkers(json) {
+        for (var i = 0; i < json.length; i++) {
+            if (typeof(json[i].AnimalLocation) !== typeof(null) && json[i].AnimalLocation.indexOf(",") !== -1) {
+                let latlong = json[i].AnimalLocation.split(',');
+                L.marker(latlong)
+                    .addTo(map)
+                    .bindPopup(json[i].Name)
+                    .openPopup();
+            }
+        }
+
+        L.marker([51.504, -0.159])
+            .addTo(map)
+            .bindPopup('You are here')
+            .openPopup();
+
+    }
+
+
+</script>

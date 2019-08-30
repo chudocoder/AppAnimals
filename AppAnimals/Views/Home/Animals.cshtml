@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "Empty";
+}
+<div style="margin-top:20px">
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.getJSON("/api/Data",
+            function (json) {
+                var tr;
+                for (var i = 0; i < json.length; i++) {
+                    tr = $('<tr/>');
+                    tr.append("<td>" + json[i].Id + "</td>");
+                    tr.append("<td>" + json[i].Name + "</td>");
+                    tr.append("<td>" + json[i].AnimalLocation + "</td>");
+                    tr.append("<td>" + json[i].AnimalRegion + "</td>");
+                    tr.append("<td>" + json[i].AnimalSkinColor + "</td>");
+                    tr.append("<td>" + json[i].AnimalType + "</td>");
+                    tr.append("<td>" + "<a href = 'EditAnimal/"    + json[i].Id + "'>Edit</a> | " +
+                                       "<a href = 'DetailsAnimal/" + json[i].Id + "' > Details</a > | " +
+                                       "<a href = '' name='" + json[i].Id + "' onclick='MyFunc(name);'> Delete</a>"  + "</td > ");
+                    $('table').append(tr);
+                }
+            });
+    });
+
+
+    function MyFunc(x) {
+        var answer = window.confirm("Delete animal?")
+        if (answer) {
+            console.log(answer);
+
+            const rawResponse = fetch(`/api/Data/${x}`, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+            });
+            const content = rawResponse;
+
+            console.log(content);
+        }
+    }
+</script>
+
+<input type="button" value="Create" onclick="window.location.href='/Home/CreateAnimal'">
+<br>
+<br>
+<table class="table table-bordered table-condensed table-hover table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>AnimalLocation</th>
+            <th>AnimalRegion</th>
+            <th>AnimalSkinColor</th>
+            <th>AnimalType</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>

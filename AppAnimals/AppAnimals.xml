@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AppAnimals</name>
+    </assembly>
+    <members>
+        <member name="M:AppAnimals.Controllers.DataController.Get">
+             <summary>
+             Get a animals.
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 GET api/data/
+            
+             </remarks>
+             <returns>Return all animals</returns>
+             <response code="200">Return all animals</response>
+        </member>
+        <member name="M:AppAnimals.Controllers.DataController.Get(System.Int32)">
+             <summary>
+             Get a animal.
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 GET api/data/{id}
+                 
+             </remarks>
+             <param name="id"></param>
+             <returns>A exist animal</returns>
+             <response code="200">Return animal</response>
+        </member>
+        <member name="M:AppAnimals.Controllers.DataController.Post(Newtonsoft.Json.Linq.JObject)">
+             <summary>
+             Add new animal.
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 POST api/data
+                 
+             </remarks>
+             <returns>Add new animal</returns>
+             <response code="200">Animal added</response>
+        </member>
+        <member name="M:AppAnimals.Controllers.DataController.Put(System.Int32,Newtonsoft.Json.Linq.JObject)">
+             <summary>
+             Update exist animal.
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 PUT api/data/5
+                 
+             </remarks>
+             <param name="id"></param>
+             <returns>Update animal</returns>
+             <response code="200">Animal Updated</response>
+        </member>
+        <member name="M:AppAnimals.Controllers.DataController.Delete(System.Int32)">
+             <summary>
+             Delete exist animal.
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 DELETE api/data/5
+                 
+             </remarks>
+             <param name="id"></param>
+             <returns>Delete animal</returns>
+             <response code="200">Animal deleted</response>
+        </member>
+    </members>
+</doc>

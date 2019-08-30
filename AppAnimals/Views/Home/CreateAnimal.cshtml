@@ -1,0 +1,80 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+    <h2>Create animal</h2>
+    <br>
+    <script>
+        $(document).ready(function () {
+
+            var tr;
+
+            var aniData = ['Name', 'AnimalType', 'AnimalSkinColor', 'AnimalRegion', 'AnimalLocation'];
+
+            for (let key in aniData) {
+                tr = $('<tr/>');
+                tr.append("<td>" + "<b>" + aniData[key] + ":&nbsp" + "</b>" + "</td>");
+                tr.append("<td>" + "<input name='" + aniData[key] + "' type='text' value = '' onchange= 'updateInput(this, this.value)'> " + "</td>");
+                $("table").append(tr);
+            }
+        })
+
+        function MyFunc() {
+            var answer = window.confirm("Save animal?")
+                if (answer) {
+                    var obj = {};
+                    var subObj = {};
+
+                    inputData = $("input");
+
+                    obj[inputData[0].getAttribute("name")] = inputData[0].value;
+
+                    for (let i = 1; i !== inputData.length; i++) {
+                        subObj["Name"] = inputData[i].value;
+                        obj[inputData[i].getAttribute("name")] = subObj;
+                        subObj = {};
+                    }
+                    console.log(JSON.stringify(obj))
+
+                    
+                      const rawResponse = fetch('/api/Data/', {
+                        method: 'POST',
+                        headers: {
+                          'Accept': 'application/json',
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(obj)
+                      });
+                      const content = rawResponse;
+
+                      console.log(content);
+                
+                }
+                else {
+                    //some code
+                }
+   
+        }
+
+        function updateInput(el, val) {
+            el.innerText = val;  
+        }  
+    </script>
+
+    <table id ="createdata" style="border: 1px solid transparent">
+        <thead>
+            <tr>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+ 
+    <br>
+    <a href="#" onclick="MyFunc(); return false;">Save</a>
+    <nobr> | </nobr>
+    @Html.ActionLink("Back", "Animals", "Home");
+}
